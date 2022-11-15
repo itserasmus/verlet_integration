@@ -77,6 +77,27 @@ function PointSystem(points, sticks, bounds, damping = 1, strech = 1, foldable =
             }
         }
     }
+    this.smoothen = () => {
+        for(var i = this.sticks.length - 1; i > -1; i--) {
+            var s = this.sticks[i];
+            // if(s[2] > 20) {
+                var sS = [...s];
+                var newStickLen = sS[2]/2;
+                var p0 = this.points[sS[0]];
+                var p1 = this.points[sS[1]];
+                var nx = (p0.x+p1.x)/2;
+                var ny = (p0.y+p1.y)/2;
+                var pointIndex = this.points.length;
+                this.points.push(new Point(nx, ny,  p0.locked && p1.locked));
+                this.points[pointIndex].px = (p0.px+p1.px)/2;
+                this.points[pointIndex].py = (p0.py+p1.py)/2;
+                this.sticks.splice(i, 1);
+                this.sticks.push([sS[0], pointIndex, newStickLen]);
+                this.sticks.push([sS[1], pointIndex, newStickLen]);
+                console.log(p0, p1);
+            // }
+        }
+    }
 
     this.closestPoint = (x, y, dist = false) => {
         var closestIndex = -1;
@@ -226,6 +247,5 @@ function generateString(bounds) {
     }
     var ps = new PointSystem(points, sticks, bounds, 1, 1, true, Number.POSITIVE_INFINITY, 50);
     ps.rad = 0;
-    console.log(ps)
     return ps;
 }
