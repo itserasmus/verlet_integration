@@ -7,6 +7,7 @@ Controls:
  - r           : Random point system
  - c           : Cloth
  - s           : String
+ - f           : Smoothen
  - n           : Clear
  - h           : Help
  - q           : Increase size
